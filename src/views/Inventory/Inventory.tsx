@@ -34,32 +34,32 @@ const Inventory = () => {
   const cardSx = {
     "cursor": "pointer",
     "&:hover": {
-      "border": "2px solid #22d3ee !important",
+      "border": "3px solid #002687 !important",
     }
   }
 
   const displayedData = Object.values(isData).map((item) => {
-    const element = item as any
-    return (
-      <Card key={element.model_name + "_key"} sx={cardSx} className="" onClick={() => getItem(element.model_name)}>
-        <div className="flex justify-between">
-          <div>{element.model_name}</div>
-          <div>{element.model_type}</div>
-        </div>
-      </Card>
+          const element = item as any
+          return (
+                  <Card key={element.model_name + "_key"} sx={cardSx} className="" onClick={() => getItem(element.model_name)}>
+                  <div className="flex justify-between">
+                  <div>{element.model_name}</div>
+                  <div>{element.model_type}</div>
+                  </div>
+                  </Card>
     )
   })
 
   return (
-    <Container>
-      <div className="flex flex-col gap-4 pt-4">
-        <Typography level="h1">Inventory</Typography>
-        <Divider></Divider>
-        <div className="flex flex-col w-auto gap-4">
+          <Container>
+          <div className="flex flex-col gap-5 pt-5">
+          <Typography level="h1">Inventory</Typography>
+          <Divider></Divider>
+          <div className="flex flex-col w-auto gap-5">
           {displayedData}
-        </div>
-      </div>
-    </Container>
+          </div>
+          </div>
+          </Container>
   );
 };
 
