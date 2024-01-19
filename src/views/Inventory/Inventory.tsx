@@ -1,39 +1,66 @@
-// src/pages/InventoryPage.tsx
-import React, { useEffect, useState } from 'react';
-import { getModels } from '../../api/getModels';
-import ModelCard from '../../components/ModelCard';
+import { useState, useEffect } from 'react';
 
-const InventoryPage: React.FC = () => {
-  const [models, setModels] = useState([]);
+import { getModels } from '../../api/getModels';
+
+import { Container, Divider, Typography, Card } from "@mui/joy";
+import { useNavigate } from 'react-router-dom';
+
+
+const Inventory = () => {
+  const [isData, setData] = useState({})
+  const [isLoading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    const fetchModels = async () => {
-      try {
-        const response = await getModels();
-        setModels(response.data); // Assuming the response has a "data" property with an array of models
-      } catch (error) {
-        console.error('Error fetching models:', error);
-      }
-    };
+    const fetchData = async () => {
+      return await getModels() //replace this with api call (js fetch or axios)
+    }
+    const execAll = async () => {
+      const { data, loading } = await fetchData()
+      setData(data)
+      setLoading(loading)
+    }
+    execAll()
+  }, []) //On Mount
 
-    fetchModels();
-  }, []);
+  const getItem = (name: String) => {
+    navigate("/analysis/" + name)
+  }
+
+  if (isLoading) return ( //Wait for data fetching
+    <div>LOADING</div>
+  )
+
+  const cardSx = {
+    "cursor": "pointer",
+    "&:hover": {
+      "border": "2px solid #22d3ee !important",
+    }
+  }
+
+  const displayedData = Object.values(isData).map((item) => {
+    const element = item as any
+    return (
+      <Card key={element.model_name + "_key"} sx={cardSx} className="" onClick={() => getItem(element.model_name)}>
+        <div className="flex justify-between">
+          <div>{element.model_name}</div>
+          <div>{element.model_type}</div>
+        </div>
+      </Card>
+    )
+  })
 
   return (
-    <div className="container mx-auto mt-8">
-      <h1 className="text-2xl font-bold mb-4">Models Inventory</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {models.map((model) => (
-          <ModelCard
-            key={model.id} // Assuming each model has a unique identifier
-            modelName={model.name}
-            modelType={model.type}
-          />
-        ))}
+    <Container>
+      <div className="flex flex-col gap-4 pt-4">
+        <Typography level="h1">Inventory</Typography>
+        <Divider></Divider>
+        <div className="flex flex-col w-auto gap-4">
+          {displayedData}
+        </div>
       </div>
-    </div>
+    </Container>
   );
 };
 
-export default InventoryPage;
-
+export default Inventory
