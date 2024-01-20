@@ -12,30 +12,32 @@ const Inventory = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const fetchData = async () => {
-      return await getModels() //replace this with api call (js fetch or axios)
-    }
-    const execAll = async () => {
-      const { data, loading } = await fetchData()
-      setData(data)
-      setLoading(loading)
-    }
-    execAll()
-  }, []) //On Mount
+          const fetchData = async () => {
+          //replace this with api call (js fetch or axios)
 
+          return await getModels()     }
+          const execAll = async () => {
+          const { data, loading } = await fetchData()
+          setData(data)
+          setLoading(loading)
+          }
+          execAll()
+          //On Mount
+          }, []) 
   const getItem = (name: String) => {
-    navigate("/analysis/" + name)
+      navigate("/analysis/" + name)
   }
 
-  if (isLoading) return ( //Wait for data fetching
-    <div>LOADING</div>
-  )
+  if (isLoading) return ( 
+          //Wait for data fetching
+          <div>LOADING</div>
+          )
 
-  const cardSx = {
-    "cursor": "pointer",
-    "&:hover": {
-      "border": "3px solid #002687 !important",
-    }
+      const cardSx = {
+          "cursor": "pointer",
+          "&:hover": {
+              "border": "3px solid #002687 !important",
+          }
   }
 
   const displayedData = Object.values(isData).map((item) => {
